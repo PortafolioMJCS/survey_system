@@ -1,0 +1,45 @@
+name: surveys_system
+
+services:
+  backend:
+    build:
+      context: ./docker/php
+    container_name: laravel_backend
+    environment:
+      - COMPOSER_PROCESS_TIMEOUT=2000
+    volumes:
+      - ./backend:/var/www
+    working_dir: /var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    command: sh -c "composer install && php artisan key:generate --no-interaction && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"
+
+  frontend:
+    build:
+      context: ./docker/angular
+    container_name: angular_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "4200:4200"
+    command: sh -c "npm install && npx ng serve --host 0.0.0.0 --poll 5000"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db_surveys
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: surveys
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

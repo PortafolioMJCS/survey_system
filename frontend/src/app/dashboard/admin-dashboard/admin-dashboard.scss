@@ -1,0 +1,203 @@
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  /* Header Superior */
+  .admin-header {
+    background-color: #1e293b; /* Color oscuro distinguible para el rol Admin */
+    color: #ffffff;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title-group {
+      h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      p {
+        font-size: 0.8rem;
+        color: #94a3b8;
+      }
+    }
+
+    .btn-logout {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+
+      &:active {
+        background: rgba(255, 255, 255, 0.25);
+      }
+    }
+  }
+
+  .admin-content {
+    padding: 20px;
+    flex: 1;
+
+    /* Grid de Métricas (KPIs) */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+
+      .kpi-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+        span {
+          font-size: 0.75rem;
+          color: #64748b;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        h3 {
+          font-size: 1.5rem;
+          color: #0f172a;
+          margin-top: 6px;
+        }
+      }
+    }
+
+    /* Sección de Acciones y Título de Tabla */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h3 {
+        font-size: 1.1rem;
+        color: #1e293b;
+      }
+
+      .btn-add {
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:active {
+          background-color: #1d4ed8;
+        }
+      }
+    }
+
+    /* Tabla Responsiva */
+    .table-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow-x: auto; /* Permite scroll horizontal suave si la pantalla es muy estrecha */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.875rem;
+
+        th {
+          background-color: #f8fafc;
+          color: #475569;
+          font-weight: 600;
+          padding: 12px 16px;
+          border-bottom: 1px solid #e2e8f0;
+          white-space: nowrap;
+        }
+
+        td {
+          padding: 14px 16px;
+          border-bottom: 1px solid #f1f5f9;
+          color: #334155;
+          white-space: nowrap;
+        }
+
+        tr:last-child td {
+          border-bottom: none;
+        }
+
+        /* Badges para Estado */
+        .status-badge {
+          display: inline-block;
+          padding: 4px 8px;
+          border-radius: 20px;
+          font-size: 0.75rem;
+          font-weight: 600;
+
+          &.active {
+            background-color: #dcfce7;
+            color: #15803d;
+          }
+
+          &.inactive {
+            background-color: #fee2e2;
+            color: #b91c1c;
+          }
+        }
+
+        .btn-action-danger {
+          background: transparent;
+          border: 1px solid #fca5a5;
+          color: #dc2626;
+          padding: 6px 10px;
+          border-radius: 6px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #fef2f2;
+          }
+        }
+      }
+    }
+
+    .chart-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+
+      .chart-header {
+        margin-bottom: 16px;
+
+        h3 {
+          margin: 0;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        .chart-subtitle {
+          font-size: 0.85rem;
+          color: #64748b;
+        }
+      }
+
+      .chart-container {
+        position: relative;
+        height: 280px; /* Altura ideal para dashboards móviles y desktop */
+        width: 100%;
+      }
+    }
+  }
+}

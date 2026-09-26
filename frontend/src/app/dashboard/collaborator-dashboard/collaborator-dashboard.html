@@ -1,0 +1,27 @@
+<div class="dashboard-container">
+  <header class="header">
+    <div class="user-info">
+      <h2>Hola, {{ collaborator.name }}</h2>
+      <p>{{ collaborator.email }}</p>
+    </div>
+    <button class="btn-logout" (click)="logout()">Salir</button>
+  </header>
+
+  <main class="content">
+    <div class="metric-card">
+      <span>Encuestas Realizadas</span>
+      <h1>{{ totalCollabSurveys() }}</h1>
+    </div>
+
+    <button class="btn-primary" (click)="toggleForm()" *ngIf="!showForm">
+      + Registrar Encuesta
+    </button>
+
+    <div *ngIf="showForm">
+      <app-question-form 
+        (questionSubmitted)="onQuestionCreated($event)" 
+        (formClosed)="toggleForm()">
+      </app-question-form>
+    </div>
+  </main>
+</div>

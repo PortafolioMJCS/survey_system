@@ -1,0 +1,70 @@
+<div class="survey-card">
+  <h3>Registrar Nueva Encuesta</h3>
+
+  <form [formGroup]="surveyForm" (ngSubmit)="submitSurvey()">
+    
+    <!-- Título de la encuesta -->
+    <div class="field">
+      <label for="title">Título o Tema de la Encuesta:</label>
+      <input 
+        id="title" 
+        type="text" 
+        formControlName="title" 
+        placeholder="Ej: Clima Laboral Q3" 
+      />
+      <div *ngIf="title?.invalid && (title?.touched || title?.dirty)" class="error">
+        <small *ngIf="title?.errors?.['required']">El título es obligatorio.</small>
+        <small *ngIf="title?.errors?.['minlength']">Mínimo 4 caracteres.</small>
+      </div>
+    </div>
+
+    <!-- Departamento / Área -->
+    <div class="field">
+      <label for="department">Área / Departamento:</label>
+      <select id="department" formControlName="department">
+        <option value="">-- Selecciona un área --</option>
+        <option value="Sistemas">Sistemas / TI</option>
+        <option value="Recursos Humanos">Recursos Humanos</option>
+        <option value="Ventas">Ventas</option>
+        <option value="Operaciones">Operaciones</option>
+      </select>
+      <div *ngIf="department?.invalid && (department?.touched || department?.dirty)" class="error">
+        <small *ngIf="department?.errors?.['required']">Selecciona un área.</small>
+      </div>
+    </div>
+
+    <!-- Nivel de satisfacción (1 - 10) -->
+    <div class="field">
+      <label for="satisfaction">Nivel de Satisfacción (1 al 10): {{ satisfaction_level?.value }}</label>
+      <input 
+        id="satisfaction" 
+        type="range" 
+        min="1" 
+        max="10" 
+        formControlName="satisfaction_level" 
+      />
+    </div>
+
+    <!-- Comentarios -->
+    <div class="field">
+      <label for="comments">Comentarios / Observaciones:</label>
+      <textarea 
+        id="comments" 
+        rows="3" 
+        formControlName="comments" 
+        placeholder="Escribe aquí tus comentarios..."
+      ></textarea>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="actions">
+      <button type="submit" [disabled]="surveyForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Guardando...' : 'Guardar Encuesta' }}
+      </button>
+      <button type="button" (click)="cancel()" [disabled]="isSubmitting">
+        Cancelar
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,103 @@
+<div class="survey-container">
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando encuesta...</p>
+    </div>
+  } @else if (survey()) {
+    <div class="survey-card">
+      <header class="survey-header">
+        <h2>{{ survey()?.title }}</h2>
+        <p>{{ survey()?.description }}</p>
+      </header>
+
+      <form (ngSubmit)="submitSurvey()">
+        @for (q of survey()?.questions; track q.id) {
+          <div class="question-block">
+            <label class="question-title">
+              {{ q.order_index }}. {{ q.title }}
+              @if (q.is_required) { <span class="required">*</span> }
+            </label>
+
+            <!-- TIPO 1: Selección única (Radio) -->
+            @if (q.question_type_id === 1) {
+              <div class="options-group">
+                @for (opt of q.options; track opt) {
+                  <label class="radio-label">
+                    <input 
+                      type="radio" 
+                      [name]="'question_' + q.id" 
+                      [value]="opt"
+                      [checked]="answers()[q.id] === opt"
+                      (change)="updateSingleAnswer(q.id, opt)" 
+                    />
+                    <span>{{ opt }}</span>
+                  </label>
+                }
+              </div>
+            }
+
+            <!-- TIPO 2: Selección única (Select) -->
+            @if (q.question_type_id === 2) {
+              <select 
+                class="form-control"
+                [value]="answers()[q.id]"
+                (change)="updateSingleAnswer(q.id, $any($event.target).value)">
+                <option value="" disabled selected>-- Selecciona una opción --</option>
+                @for (opt of q.options; track opt) {
+                  <option [value]="opt">{{ opt }}</option>
+                }
+              </select>
+            }
+
+            <!-- TIPO 3: Selección múltiple (Checkbox) -->
+            @if (q.question_type_id === 3) {
+              <div class="options-group">
+                @for (opt of q.options; track opt) {
+                  <label class="checkbox-label">
+                    <input 
+                      type="checkbox" 
+                      [value]="opt"
+                      (change)="onCheckboxChange(q.id, opt, $any($event.target).checked)" 
+                    />
+                    <span>{{ opt }}</span>
+                  </label>
+                }
+              </div>
+            }
+
+            <!-- TIPO 4: Selección múltiple (Select Múltiple) -->
+            @if (q.question_type_id === 4) {
+              <select 
+                multiple 
+                class="form-control select-multiple"
+                (change)="onMultipleSelectChange(q.id, $event)">
+                @for (opt of q.options; track opt) {
+                  <option [value]="opt">{{ opt }}</option>
+                }
+              </select>
+              <small class="help-text">Mantén presionado Ctrl (o Cmd) para seleccionar varias opciones.</small>
+            }
+
+            <!-- TIPO 5: Pregunta abierta (Texto / Textarea) -->
+            @if (q.question_type_id === 5) {
+              <textarea 
+                rows="4" 
+                class="form-control"
+                placeholder="Escribe tu respuesta aquí..."
+                [value]="answers()[q.id]"
+                (input)="updateSingleAnswer(q.id, $any($event.target).value)">
+              </textarea>
+            }
+          </div>
+        }
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+            {{ isSubmitting() ? 'Enviando...' : 'Enviar Respuestas' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

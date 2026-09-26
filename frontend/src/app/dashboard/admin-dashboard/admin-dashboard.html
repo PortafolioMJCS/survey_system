@@ -1,0 +1,89 @@
+<div class="admin-container">
+  <header class="admin-header">
+    <div class="title-group">
+      <h2>Panel de Control</h2>
+      <p>Administración General</p>
+    </div>
+    <button class="btn-logout" (click)="logout()">Salir</button>
+  </header>
+
+  <main class="admin-content">
+    <!-- Tarjetas de Métricas -->
+    <div class="metrics-grid">
+      <div class="kpi-card">
+        <span>Colaboradores</span>
+        <h3>{{ getTotalCollaborators() }}</h3>
+      </div>
+      <div class="kpi-card">
+        <span>Total Encuestas</span>
+        <h3>{{ totalCompanySurveys() }}</h3>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Rendimiento de Encuestas</h3>
+        <span class="chart-subtitle">Respuestas recibidas por mes</span>
+      </div>
+
+      <div class="chart-container">
+        <canvas #statsChart></canvas>
+      </div>
+    </div>
+
+    <!-- Encabezado de Sección -->
+    <div class="section-header">
+      <h3>Colaboradores</h3>
+      <!-- <button class="btn-add" (click)="createCollaborator()">+ Agregar</button> -->
+      <button class="btn-add" (click)="toggleForm()" *ngIf="!showForm">
+        + Registrar Colaborador
+      </button>
+
+      <div *ngIf="showForm">
+        <app-collaborator-form 
+          (collaboratorCreated)="onCollaboratorCreated($event)" 
+          (formClosed)="toggleForm()">
+        </app-collaborator-form>
+      </div>
+    </div>
+
+    <!-- Tabla de Colaboradores -->
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th># Encuestas</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 👈 Cambiamos collaboratorService.getAll() por collaborators() -->
+          <tr *ngFor="let collaborator of collaborators()">
+            <td><strong>{{ collaborator.name }}</strong></td>
+            <td>{{ collaborator.email }}</td>
+            <td>{{collaborator.completed_surveys_count}}  </td>
+            <td>
+              <span 
+                class="status-badge" 
+                [ngClass]="collaborator.active ? 'active' : 'inactive'">
+                {{ collaborator.active ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              <!-- 👈 Llamamos al método deactivateCollaborator(id) -->
+              <button 
+                *ngIf="collaborator.active"
+                class="btn-action-danger" 
+                (click)="deactivateCollaborator(collaborator.id!)">
+                Desactivar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
